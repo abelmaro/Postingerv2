@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Postinger.Models.PostViewModel>
+
+@{
+    ViewData["Title"] = "Post";
+}
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.min.js" type="text/javascript"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" type="text/javascript"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+        <script src="~/js/PostCtrl.js"></script>
+        <script>
+            $('#myModal').on('shown.bs.modal', function () {
+                $('#myInput').trigger('focus')
+            })
+        </script>
+    </head>
+
+<h1>Post</h1>
+<style>
+    .fotoUsuario{
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+    }
+</style>
+
+
+<div ng-app="PostApp" ng-controller="PostController" ng-init="init()">
+
+    <button ng-click="createNewPost()">Create New</button>
+    <div ng-hide="!habilitaMostrar">
+        <input type="text" name="postName" id="postName" placeholder="Post name" ng-model='postName' />
+        <input type="text" name="postAutor" id="postAutor" placeholder="Autor" ng-model='postAutor' />
+        <button ng-click="addPost()">+</button>
+        <br />
+        <div class="card" style="width: 18rem;margin: 2%;">
+            <div class="card-body">
+                <h5 class="card-title">{{postName || "Post name"}}</h5>
+                <p class="card-text">
+                    Este post le pertenece a <span class="text-primary">{{postAutor}}</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <center class="d-flex flex-wrap">
+        <div class="card text-white bg-primary mb-3" style="max-width: 18rem;margin: 2%;" ng-repeat="post in Posts" ng-bind-html-unsafe="post" ng-dblclick="showModal(post.id)">
+            <div class="card-header">{{post.autor}}</div>
+            <div class="card-body">
+                <h5 class="card-title">{{post.postName}}</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+            <div class="card-footer bg-transparent border-success">{{post.fechaPublicacion}}</div>
+        </div>
+    </center>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{postName}}</h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{contenido}}
+                </div>
+                <div class="modal-footer">
+                    <h6>{{fechaPublicacion}}</h6>
+                </div>
+                <div class="m-1 bg-primary" ng-repeat="comment in Comments" ng-bind-html-unsafe="comment">
+                    <div class="card">
+                        <div class="card-body d-flex float-left align-items-center">
+                            <div class="bg-danger fotoUsuario"></div>
+                            <div class="text-muted ml-3">{{comment.comentario}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-1 bg-primary">
+                    <div class="card">
+                        <div class="card-body d-flex float-left align-items-center">
+                            <input type="text" name="comentario" placeholder="Agregar comentario" ng-model="commentData">
+                            <button ng-click="addComment(currentPostId)">+</button>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
