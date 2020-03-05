@@ -50,7 +50,7 @@ namespace Postinger.Controllers
 
         //[HttpGet]
         //[AllowAnonymous]
-        public List<PostViewModel> GetAll()
+        public List<PostDTO> GetAll() //TODO: Agregar AutoMapper
         {
             var userID = GetCurrentUserId();
 
@@ -60,14 +60,22 @@ namespace Postinger.Controllers
                 //.Include(x => x.Likes)
                 .Where(x => x.UserId == userID);
 
-                var test = posts.ToList();
+            var test = posts.ToList();
+            var dtoList = new List<PostDTO>();
 
-            foreach(var post in test)
-            {                
-                post.CantidadDeLikes = _context.Like.Where(x => x.PostId == post.Id && x.Tipo == "like").Count();
+            foreach (var post in posts)
+            {
+                foreach (var item in dtoList)
+                {
+                    item.cantidadLike = _context.Like.Where(x => x.PostId == post.Id && x.Tipo == "like").Count();
+                    item.cantidadDislike = _context.Like.Where(x => x.PostId == post.Id && x.Tipo == "dislike").Count();
+                    item.Autor = post.Autor;
+                    item.Comentarios = post.Comentarios;
+                    item.Id = post.Id;
+                }
             }
 
-            return test;
+            return dtoList;
         }
 
         public List<PostViewModel> AllPosts()
