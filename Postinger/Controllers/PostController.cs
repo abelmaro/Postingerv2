@@ -54,13 +54,20 @@ namespace Postinger.Controllers
         {
             var userID = GetCurrentUserId();
 
-            var post = _context.Post
+            var posts = _context.Post
                 .Include(x => x.Comentarios)
                     .ThenInclude(x => x.User)
-                .Where(x => x.UserId == userID)
-                .ToList();
+                //.Include(x => x.Likes)
+                .Where(x => x.UserId == userID);
 
-            return post;
+                var test = posts.ToList();
+
+            foreach(var post in test)
+            {                
+                post.CantidadDeLikes = _context.Like.Where(x => x.PostId == post.Id && x.Tipo == "like").Count();
+            }
+
+            return test;
         }
 
         public List<PostViewModel> AllPosts()

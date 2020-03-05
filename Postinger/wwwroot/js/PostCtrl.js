@@ -93,14 +93,15 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
         });
     }
 
-    $scope.addComment = function (commentData,id) {
-        $scope.postData = {
-            Comentario: commentData,
-            PostID: id
-        }
-        addNewComment($scope.postData);
-        $scope.commentData = "";
-
+    $scope.addComment = function (commentData, id) {
+        if (commentData != undefined && commentData != '') {
+            $scope.postData = {
+                Comentario: commentData,
+                PostID: id
+            }
+            addNewComment($scope.postData);
+            $scope.commentData = "";
+        }    
     }
 
     $scope.addPost = function () {
