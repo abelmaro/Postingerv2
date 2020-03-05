@@ -18,6 +18,8 @@
         }
         .iconText {
             font-size: 25px;
+            display: flex;
+            justify-content: space-around;
         }
     </style>
     <div class="text-center pt-5" ng-app="PostApp" ng-controller="PostController" ng-init="init()">
@@ -26,10 +28,17 @@
         <center class="d-flex flex-wrap justify-content-center" ng-controller="PostController">
             <div class="card text-white mb-3 postCard text-black-50" ng-repeat="post in AllPosts" ng-bind-html-unsafe="post" @*ng-dblclick="showModal(post.id)"*@>
                 <div class="card-header text-sm-left d-flex justify-content-between"><img class="userImg" src="~/profile.png"> {{post.autor}}
-                    <span class="iconText">
-                        <i class="fa fa-thumbs-up" ng-click="mg(id)"></i>
-                        <i class="fa fa-thumbs-down"></i>
-                    </span>
+                <div>
+                    <div class="iconText">
+                        <i class="fa fa-thumbs-up" ng-click="addLike(post.id)"></i>
+                        <i class="fa fa-thumbs-down" ng-click="addDislike(post.id)"></i>
+                    </div>
+                    <div>
+                        <span>21</span>
+                        <span>|</span>
+                        <span>76</span>
+                    </div>
+                </div>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">{{post.postName}}</h5>

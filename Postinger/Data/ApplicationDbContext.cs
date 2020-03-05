@@ -15,5 +15,6 @@ namespace Postinger.Data
         }
         public DbSet<PostViewModel> Post { get; set; }
         public DbSet<CommentsViewModel> Comment { get; set; }
+        public DbSet<LikesViewModel> Like { get; set; }
     }
 }

@@ -100,5 +100,12 @@ namespace Postinger.Controllers
 
             return id;
         }
+
+        [HttpPost]
+        public void AddLike([FromBody] LikesViewModel vm)
+        {
+            var like = _context.Like.Add(vm);
+            _context.SaveChanges();
+        }
     }
 }
