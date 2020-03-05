@@ -10,5 +10,6 @@ namespace Postinger.Models
     public class UserViewModel : IdentityUser
     { 
         public virtual IEnumerable<PostViewModel> Posts { get; set; }
+        public virtual IEnumerable<CommentsViewModel> Comentarios { get; set; }
     }
 }

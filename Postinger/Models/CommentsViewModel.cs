@@ -17,6 +17,11 @@ namespace Postinger.Models
 
         public int PostID { get; set; }
 
-        public int Usuario { get; set; }
+        public string Usuario { get; set; }
+
+        [ForeignKey("Usuario")]
+        public UserViewModel User { get; set; }
+
+        public DateTime FechaComentario { get; set; }
     }
 }

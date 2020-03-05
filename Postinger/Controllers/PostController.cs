@@ -56,6 +56,7 @@ namespace Postinger.Controllers
 
             var post = _context.Post
                 .Include(x => x.Comentarios)
+                    .ThenInclude(x => x.User)
                 .Where(x => x.UserId == userID)
                 .ToList();
 
@@ -67,6 +68,7 @@ namespace Postinger.Controllers
             //return _context.Post.GroupBy(x => x.UserId).ToList();
             return _context.Post
                 .Include(x => x.Comentarios)
+                .ThenInclude(x => x.User)
                 .ToList();
         }
 
