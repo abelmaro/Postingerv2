@@ -62,6 +62,15 @@ namespace Postinger.Controllers
             return post;
         }
 
+        public List<PostViewModel> AllPosts()
+        {
+            //return _context.Post.GroupBy(x => x.UserId).ToList();
+            return _context.Post
+                .Include(x => x.Comentarios)
+                .ToList();
+        }
+
+
         //public IdentityUser TheUser(string email)
         //{
         //    var user = _context.Users.Where(x => x.UserName == email).FirstOrDefault();

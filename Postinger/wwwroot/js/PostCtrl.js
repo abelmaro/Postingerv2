@@ -11,6 +11,7 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
     $scope.habilitaMostrar = false;
     $scope.commentData = "";
     $scope.usersList = [];
+    $scope.AllPosts = [];
 
     
     //#region Functions
@@ -49,6 +50,16 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
         };
 
     }());
+
+    function getAllPosts() {
+        $http.get("/Post/AllPosts").then(function (response) {
+            //jQuery.each(response.data, function (i, val) {
+            //    $scope.AllPosts.push(val);
+            //});
+            $scope.AllPosts = response.data;
+            console.log($scope.postList);
+        });
+    }  
 
     $scope.showModal = function (id) {
         angular.forEach($scope.Posts, function (value, key) {
@@ -89,11 +100,11 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
     //#endregion
 
     //#region Services
-    function getUserList() {
-        $http.get("/User/GetAllUsers").then(function (response) {
-            $scope.usersList = response.data;
-        });
-    }
+    //function getUserList() {
+    //    $http.get("/User/GetAllUsers").then(function (response) {
+    //        $scope.usersList = response.data;
+    //    });
+    //}
 
     function addNewPost(postData) {
         var deferred = $q.defer();
@@ -110,6 +121,7 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
             .then(function (response) {
                 getComments($scope.currentPostId);
                 getAll();
+                getAllPosts();
             });
     }
 
@@ -132,7 +144,7 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
             $scope.UserToken = response.data;
         });
     }
-    
+    controladorPost = $scope;
     //#endregion
 
     var init = function () {
@@ -145,7 +157,10 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
         });
         getAll();
         getUserToken();
-        getUserList();
+        //getUserList();
+        getAllPosts();
     };
     init();
 }]);
+
+var controladorPost;
