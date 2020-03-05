@@ -55,6 +55,7 @@ namespace Postinger.Controllers
             var userID = GetCurrentUserId();
 
             var post = _context.Post
+                .Include(x => x.Comentarios)
                 .Where(x => x.UserId == userID)
                 .ToList();
 

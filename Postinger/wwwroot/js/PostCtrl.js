@@ -24,6 +24,7 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
     }
 
     //#region Auxiliares
+
         var sortBy = (function () {
         var toString = Object.prototype.toString,
             // default parser function
@@ -62,12 +63,13 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
         });
     }
 
-    $scope.addComment = function (id) {
+    $scope.addComment = function (commentData,id) {
         $scope.postData = {
-            Comentario: $scope.commentData,
+            Comentario: commentData,
             PostID: id
         }
         addNewComment($scope.postData);
+        
         
         $scope.commentData = "";
 
@@ -107,13 +109,15 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
         $http.post('/Comment/AddComment', postData)
             .then(function (response) {
                 getComments($scope.currentPostId);
-                deferred.resolve('request successful');
+                getAll();
             });
     }
 
     function getAll() {
         $http.get("/Post/GetAll").then(function (response) {
+
             $scope.Posts = sortBy(response.data, { prop: "fechaPublicacion" });
+            console.log($scope.Posts);
         });
     }
 
