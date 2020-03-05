@@ -10,6 +10,7 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
     $scope.contenido = ""; 
     $scope.habilitaMostrar = false;
     $scope.commentData = "";
+    $scope.usersList = [];
 
     
     //#region Functions
@@ -71,7 +72,6 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
         $scope.commentData = "";
 
     }
-    //#endregion
 
     $scope.addPost = function () {
         $scope.postData = {
@@ -82,10 +82,17 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
         }
         addNewPost($scope.postData);
         $scope.habilitaMostrar = false;
-    }   
+    }
+
     //#endregion
 
     //#region Services
+    function getUserList() {
+        $http.get("/User/GetAllUsers").then(function (response) {
+            $scope.usersList = response.data;
+        });
+    }
+
     function addNewPost(postData) {
         var deferred = $q.defer();
         $http.post('/Post/AddNewPost', postData)
@@ -107,7 +114,6 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
     function getAll() {
         $http.get("/Post/GetAll").then(function (response) {
             $scope.Posts = sortBy(response.data, { prop: "fechaPublicacion" });
-
         });
     }
 
@@ -120,7 +126,6 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
     function getUserToken() {
         $http.post("/Post/GetCurrentUserId").then(function (response) {
             $scope.UserToken = response.data;
-            console.log($scope.UserToken);
         });
     }
     
@@ -136,6 +141,7 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
         });
         getAll();
         getUserToken();
+        getUserList();
     };
     init();
 }]);
