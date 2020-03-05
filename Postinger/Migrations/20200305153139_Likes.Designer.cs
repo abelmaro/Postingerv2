@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Postinger.Data;
 
 namespace Postinger.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200305153139_Likes")]
+    partial class Likes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,20 +166,15 @@ namespace Postinger.Migrations
                     b.Property<string>("Comentario")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("FechaComentario")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("PostID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Usuario")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Usuario")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PostID");
-
-                    b.HasIndex("Usuario");
 
                     b.ToTable("Comment");
                 });
@@ -356,10 +353,6 @@ namespace Postinger.Migrations
                         .HasForeignKey("PostID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Postinger.Models.UserViewModel", "User")
-                        .WithMany("Comentarios")
-                        .HasForeignKey("Usuario");
                 });
 
             modelBuilder.Entity("Postinger.Models.LikesViewModel", b =>

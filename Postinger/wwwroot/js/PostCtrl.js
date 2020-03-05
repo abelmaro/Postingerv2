@@ -61,6 +61,25 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
         });
     }  
 
+
+    $scope.addLike = function (postId) {
+        var vm = {
+            UserId: $scope.UserToken,
+            PostId: postId,
+            Tipo: "like"
+        }
+        addNewLike(vm);
+    }
+
+    $scope.addDislike = function (postId) {
+        var vm = {
+            UserId: $scope.UserToken,
+            PostId: postId,
+            Tipo: "dislike"
+        }
+        addNewLike(vm);
+    }
+
     $scope.showModal = function (id) {
         angular.forEach($scope.Posts, function (value, key) {
             if (value.id == id) {
@@ -80,8 +99,6 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
             PostID: id
         }
         addNewComment($scope.postData);
-        
-        
         $scope.commentData = "";
 
     }
@@ -105,6 +122,14 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
     //        $scope.usersList = response.data;
     //    });
     //}
+
+    function addNewLike(like) {
+        var deferred = $q.defer();
+        $http.post('/Post/AddLike', like)
+            .then(function (response) {
+               
+            });
+    }
 
     function addNewPost(postData) {
         var deferred = $q.defer();
@@ -157,7 +182,6 @@ PostApp.controller('PostController', ['$scope', '$http', '$q', function ($scope,
         });
         getAll();
         getUserToken();
-        //getUserList();
         getAllPosts();
     };
     init();
