@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Postinger.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Postinger
 {
@@ -28,6 +29,13 @@ namespace Postinger
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("Postinger")));
@@ -42,6 +50,7 @@ namespace Postinger
 
             services.AddRazorPages()
                 .AddRazorRuntimeCompilation();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +69,9 @@ namespace Postinger
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseCors("MyPolicy");
+
 
             app.UseRouting();
 

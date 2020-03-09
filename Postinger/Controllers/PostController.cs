@@ -18,7 +18,7 @@ namespace Postinger.Controllers
 {
     //[Route("api/[controller]")]
     //[ApiController]
-    [Authorize]
+    [AllowAnonymous]
     public class PostController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -50,7 +50,7 @@ namespace Postinger.Controllers
 
         //[HttpGet]
         //[AllowAnonymous]
-        public List<PostDTO> GetAll() //TODO: Agregar AutoMapper
+        public List<PostViewModel> GetAll() //TODO: Agregar AutoMapper
         {
             var userID = GetCurrentUserId();
 
@@ -61,21 +61,21 @@ namespace Postinger.Controllers
                 .Where(x => x.UserId == userID);
 
             var test = posts.ToList();
-            var dtoList = new List<PostDTO>();
+            //var dtoList = new List<PostDTO>();
 
-            foreach (var post in posts)
-            {
-                foreach (var item in dtoList)
-                {
-                    item.cantidadLike = _context.Like.Where(x => x.PostId == post.Id && x.Tipo == "like").Count();
-                    item.cantidadDislike = _context.Like.Where(x => x.PostId == post.Id && x.Tipo == "dislike").Count();
-                    item.Autor = post.Autor;
-                    item.Comentarios = post.Comentarios;
-                    item.Id = post.Id;
-                }
-            }
+            //foreach (var post in posts)
+            //{
+            //    foreach (var item in dtoList)
+            //    {
+            //        item.cantidadLike = _context.Like.Where(x => x.PostId == post.Id && x.Tipo == "like").Count();
+            //        item.cantidadDislike = _context.Like.Where(x => x.PostId == post.Id && x.Tipo == "dislike").Count();
+            //        item.Autor = post.Autor;
+            //        item.Comentarios = post.Comentarios;
+            //        item.Id = post.Id;
+            //    }
+            //}
 
-            return dtoList;
+            return test;
         }
 
         public List<PostViewModel> AllPosts()

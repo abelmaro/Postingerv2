@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Postinger.Data;
 using Postinger.Models;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Postinger.Controllers
 {
+    //[EnableCors("MyPolicy")]
     public class CommentController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -33,7 +35,8 @@ namespace Postinger.Controllers
             comment.Comentario = vm.Comentario;
             comment.PostID = vm.PostID;
             comment.FechaComentario = DateTime.Now;
-            comment.Usuario = GetCurrentUserId();
+            //comment.Usuario = GetCurrentUserId();
+            comment.Usuario = "4ed9f1f1-96c8-498e-b3dd-c8d57b4115c1";
 
             _context.Comment.Add(comment);
             _context.SaveChanges();
@@ -41,10 +44,10 @@ namespace Postinger.Controllers
 
         public string GetCurrentUserId()
         {
-            var identity = (ClaimsIdentity)User.Identity;
+            //var identity = (ClaimsIdentity)User.Identity;
             var user = userManager.GetUserAsync(HttpContext.User);
 
-            IEnumerable<Claim> claims = identity.Claims;
+            //IEnumerable<Claim> claims = identity.Claims;
 
             var userLogged = _context.Users.Where(x => x.UserName == user.Result.UserName).FirstOrDefault();
 

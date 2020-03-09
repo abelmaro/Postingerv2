@@ -24,7 +24,7 @@
     </style>
     <div class="text-center pt-5" ng-app="PostApp" ng-controller="PostController" ng-init="init()">
         <h1 class="display-4">Bienvenido a Postinger</h1>
-        <p>Bla bla bla, descripción que pensaré en un futuro bla bla vla</p></i>
+        <p>Bla bla bla, descripción que pensaré en un futuro bla bla vla</p>
         <center class="d-flex flex-wrap justify-content-center" ng-controller="PostController">
             <div class="card text-white mb-3 postCard text-black-50" ng-repeat="post in AllPosts" ng-bind-html-unsafe="post" @*ng-dblclick="showModal(post.id)"*@>
                 <div class="card-header text-sm-left d-flex justify-content-between"><img class="userImg" src="~/profile.png"> {{post.autor}}
