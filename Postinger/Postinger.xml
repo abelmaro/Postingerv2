@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Postinger</name>
+    </assembly>
+    <members>
+        <member name="M:Postinger.Controllers.PostController.AddNewPost(Postinger.Models.PostViewModel)">
+            <summary>
+            Añade un nuevo Post.
+            </summary>
+            <param name="postData"></param> 
+        </member>
+        <member name="M:Postinger.Controllers.PostController.AllPosts">
+            <summary>
+            Obtiene todos los posts
+            </summary>
+        </member>
+        <member name="M:Postinger.Controllers.PostController.AddLike(Postinger.Models.LikesViewModel)">
+            <summary>
+            Añade un like a un post
+            </summary>
+        </member>
+    </members>
+</doc>

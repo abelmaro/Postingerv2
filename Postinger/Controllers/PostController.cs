@@ -16,8 +16,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Postinger.Controllers
 {
-    //[Route("api/[controller]")]
-    //[ApiController]
+    [Route("api/[controller]")]
+    [ApiController]
     [AllowAnonymous]
     public class PostController : Controller
     {
@@ -32,13 +32,16 @@ namespace Postinger.Controllers
             _UserManager = userManager;
         }
 
-        public IActionResult Post()
+        public IActionResult Post() 
         {
             var postDb = _context.Post.ToList();
             return View(postDb);
         }
-
-        //[HttpPost]
+        /// <summary>
+        /// Añade un nuevo Post.
+        /// </summary>
+        /// <param name="postData"></param> 
+        [HttpPost]
         public void AddNewPost([FromBody] PostViewModel postData)
         {
             if (postData != null)
@@ -48,30 +51,37 @@ namespace Postinger.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtiene todos los posts por usuario
+        /// </summary>
         //[HttpGet]
-        //[AllowAnonymous]
-        public List<PostViewModel> GetAll() //TODO: Agregar AutoMapper
-        {
-            var userID = GetCurrentUserId();
+        //public List<PostViewModel> GetAll(PostViewModel post) //TODO: Agregar AutoMapper
+        //{
+        //    //var userID = GetCurrentUserId();
+        //    var userID = "4ed9f1f1-96c8-498e-b3dd-c8d57b4115c1";
 
-            var posts = _context.Post
-                //.Include(x => x.Comentarios)
-                //    .ThenInclude(x => x.User)
-                //.Include(x => x.Likes)
-                .Where(x => x.UserId == userID);
+        //    var posts = _context.Post
+        //        //.Include(x => x.Comentarios)
+        //        //    .ThenInclude(x => x.User)
+        //        //.Include(x => x.Likes)
+        //        .Where(x => x.UserId == userID);
 
-            var test = posts.ToList();
-            //var dtoList = new List<PostDTO>();
+        //    var test = posts.ToList();
+        //    //var dtoList = new List<PostDTO>();
 
-            foreach (var item in test)
-            {
-                item.cantidadLike = _context.Like.Where(x => x.PostId == item.Id && x.Tipo == "like").Count();
-                item.cantidadDislike = _context.Like.Where(x => x.PostId == item.Id && x.Tipo == "dislike").Count();
-            }
+        //    foreach (var item in test)
+        //    {
+        //        item.cantidadLike = _context.Like.Where(x => x.PostId == item.Id && x.Tipo == "like").Count();
+        //        item.cantidadDislike = _context.Like.Where(x => x.PostId == item.Id && x.Tipo == "dislike").Count();
+        //    }
 
-            return test;
-        }
+        //    return test;
+        //}
 
+        /// <summary>
+        /// Obtiene todos los posts
+        /// </summary>
+        [HttpGet]
         public List<PostViewModel> AllPosts()
         {
             //return _context.Post.GroupBy(x => x.UserId).ToList();
@@ -87,32 +97,30 @@ namespace Postinger.Controllers
             return posts;
         }
 
-
-        //public IdentityUser TheUser(string email)
+        /// <summary>
+        /// Obtiene el id del usuario logueado
+        /// </summary>
+        //[HttpGet]
+        //public string GetCurrentUserId()
         //{
-        //    var user = _context.Users.Where(x => x.UserName == email).FirstOrDefault();
+        //    var identity = (ClaimsIdentity)User.Identity;
+        //    //var user = _UserManager.GetUserId();
+        //    var user = _UserManager.GetUserAsync(HttpContext.User);
 
-        //    return user;
+
+
+        //    IEnumerable<Claim> claims = identity.Claims;
+
+        //    //var userLogged = _context.Users.Where(x => x.UserName == user.Result.UserName).FirstOrDefault();
+
+        //    //var id = userLogged.Id;
+
+        //    return "4ed9f1f1-96c8-498e-b3dd-c8d57b4115c1";
         //}
 
-
-        public string GetCurrentUserId()
-        {
-            var identity = (ClaimsIdentity)User.Identity;
-            //var user = _UserManager.GetUserId();
-            var user = _UserManager.GetUserAsync(HttpContext.User);
-
-
-
-            IEnumerable<Claim> claims = identity.Claims;
-
-            //var userLogged = _context.Users.Where(x => x.UserName == user.Result.UserName).FirstOrDefault();
-
-            //var id = userLogged.Id;
-
-            return "4ed9f1f1-96c8-498e-b3dd-c8d57b4115c1";
-        }
-
+        /// <summary>
+        /// Añade un like a un post
+        /// </summary>
         [HttpPost]
         public void AddLike([FromBody] LikesViewModel vm)
         {

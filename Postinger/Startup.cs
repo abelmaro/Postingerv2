@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Postinger.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
+
 
 namespace Postinger
 {
@@ -48,6 +50,11 @@ namespace Postinger
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Postinger", Version = "v1" });
+            });
+
             services.AddRazorPages()
                 .AddRazorRuntimeCompilation();
 
@@ -56,8 +63,16 @@ namespace Postinger
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("./swagger/v1/swagger.json", "Postinger v1");
+            });
+
             if (env.IsDevelopment())
             {
+
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
@@ -73,13 +88,16 @@ namespace Postinger
             app.UseCors("MyPolicy");
 
 
-            app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseRouting();
+
             app.UseEndpoints(endpoints =>
             {
+                //endpoints.MapControllers();
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
