@@ -29,7 +29,7 @@ namespace Postinger.Controllers
             return comentarios;
         }
 
-        public void AddComment([FromBody] CommentsViewModel vm)
+        public CommentsViewModel AddComment([FromBody] CommentsViewModel vm)
         {
             var comment = new CommentsViewModel();
             comment.Comentario = vm.Comentario;
@@ -40,6 +40,7 @@ namespace Postinger.Controllers
 
             _context.Comment.Add(comment);
             _context.SaveChanges();
+            return comment;
         }
 
         public string GetCurrentUserId()
@@ -54,6 +55,12 @@ namespace Postinger.Controllers
             var id = userLogged.Id;
 
             return id;
+        }
+
+        public List<CommentsViewModel> GetComments()
+        {
+            var comentarios = _context.Comment.ToList();
+            return comentarios;
         }
 
     }

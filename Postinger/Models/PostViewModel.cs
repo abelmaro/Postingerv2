@@ -26,6 +26,12 @@ namespace Postinger.Models
         public IList<CommentsViewModel> Comentarios { get; set; }
         public IList<LikesViewModel> Likes { get; set; }
 
-        
+        [NotMapped]
+        public int cantidadLike { get; set; }
+
+        [NotMapped]
+        public int cantidadDislike { get; set; }
+
+
     }
 }

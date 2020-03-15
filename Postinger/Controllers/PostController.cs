@@ -55,25 +55,19 @@ namespace Postinger.Controllers
             var userID = GetCurrentUserId();
 
             var posts = _context.Post
-                .Include(x => x.Comentarios)
-                    .ThenInclude(x => x.User)
+                //.Include(x => x.Comentarios)
+                //    .ThenInclude(x => x.User)
                 //.Include(x => x.Likes)
                 .Where(x => x.UserId == userID);
 
             var test = posts.ToList();
             //var dtoList = new List<PostDTO>();
 
-            //foreach (var post in posts)
-            //{
-            //    foreach (var item in dtoList)
-            //    {
-            //        item.cantidadLike = _context.Like.Where(x => x.PostId == post.Id && x.Tipo == "like").Count();
-            //        item.cantidadDislike = _context.Like.Where(x => x.PostId == post.Id && x.Tipo == "dislike").Count();
-            //        item.Autor = post.Autor;
-            //        item.Comentarios = post.Comentarios;
-            //        item.Id = post.Id;
-            //    }
-            //}
+            foreach (var item in test)
+            {
+                item.cantidadLike = _context.Like.Where(x => x.PostId == item.Id && x.Tipo == "like").Count();
+                item.cantidadDislike = _context.Like.Where(x => x.PostId == item.Id && x.Tipo == "dislike").Count();
+            }
 
             return test;
         }
@@ -81,10 +75,16 @@ namespace Postinger.Controllers
         public List<PostViewModel> AllPosts()
         {
             //return _context.Post.GroupBy(x => x.UserId).ToList();
-            return _context.Post
-                .Include(x => x.Comentarios)
-                .ThenInclude(x => x.User)
+            var posts = _context.Post
+                .Include(x => x.User)
                 .ToList();
+
+            foreach (var item in posts)
+            {
+                item.cantidadLike = _context.Like.Where(x => x.PostId == item.Id && x.Tipo == "like").Count();
+                item.cantidadDislike = _context.Like.Where(x => x.PostId == item.Id && x.Tipo == "dislike").Count();
+            }
+            return posts;
         }
 
 
@@ -95,11 +95,6 @@ namespace Postinger.Controllers
         //    return user;
         //}
 
-        //public list<commentsviewmodel> getcomentariosbypostid(int id)
-        //{
-        //    var comentarios = _context.comment.where(x => x.postid == id).tolist();
-        //    return comentarios;
-        //}
 
         public string GetCurrentUserId()
         {
@@ -111,18 +106,23 @@ namespace Postinger.Controllers
 
             IEnumerable<Claim> claims = identity.Claims;
 
-            var userLogged = _context.Users.Where(x => x.UserName == user.Result.UserName).FirstOrDefault();
+            //var userLogged = _context.Users.Where(x => x.UserName == user.Result.UserName).FirstOrDefault();
 
-            var id = userLogged.Id;
+            //var id = userLogged.Id;
 
-            return id;
+            return "4ed9f1f1-96c8-498e-b3dd-c8d57b4115c1";
         }
 
         [HttpPost]
         public void AddLike([FromBody] LikesViewModel vm)
         {
-            var like = _context.Like.Add(vm);
-            _context.SaveChanges();
+            var likes = _context.Like;
+            var validar = likes.Where(x => x.PostId == vm.PostId && x.UserId == vm.UserId).Count() > 0;
+            if (validar == false)
+            {
+                var like = likes.Add(vm);
+                _context.SaveChanges();
+            }
         }
     }
 }
