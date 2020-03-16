@@ -73,6 +73,18 @@ namespace Postinger.Controllers
             _context.Remove(comment);
             _context.SaveChanges();
         }
+        
+        [HttpPost]
+        public void DeleteComments(int[] ids)
+        {
+            foreach (var id in ids)
+            {
+                var comment = _context.Comment.Where(x => x.Id == id).FirstOrDefault();
+                _context.Remove(comment);
+
+            }
+            _context.SaveChanges();
+        }
 
     }
 }
