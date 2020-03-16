@@ -66,5 +66,13 @@ namespace Postinger.Controllers
             return comentarios;
         }
 
+        [HttpDelete]
+        public void DeleteComment(int id)
+        {
+            var comment = _context.Comment.Where(x => x.Id == id).FirstOrDefault();
+            _context.Remove(comment);
+            _context.SaveChanges();
+        }
+
     }
 }

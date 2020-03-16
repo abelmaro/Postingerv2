@@ -18,6 +18,7 @@ namespace Postinger.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
+    [AllowAnonymous]
     public class PostController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
