@@ -4,15 +4,15 @@
         <name>Postinger</name>
     </assembly>
     <members>
-        <member name="M:Postinger.Controllers.PostController.AddNewPost(Postinger.Models.PostViewModel)">
-            <summary>
-            Añade un nuevo Post.
-            </summary>
-            <param name="postData"></param> 
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Postinger.Controllers.PostController.AddNewPost(Postinger.Models.PostViewModel)" -->
         <member name="M:Postinger.Controllers.PostController.AllPosts">
             <summary>
             Obtiene todos los posts
+            </summary>
+        </member>
+        <member name="M:Postinger.Controllers.PostController.GetCurrentUserId">
+            <summary>
+            Obtiene el id del usuario logueado
             </summary>
         </member>
         <member name="M:Postinger.Controllers.PostController.AddLike(Postinger.Models.LikesViewModel)">

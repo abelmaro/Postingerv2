@@ -16,10 +16,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Postinger.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
-    public class PostController : Controller
+    [Route("api/[controller]/[action]")]
+    public class PostController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<PostController> _logger;
@@ -32,15 +31,10 @@ namespace Postinger.Controllers
             _UserManager = userManager;
         }
 
-        public IActionResult Post() 
-        {
-            var postDb = _context.Post.ToList();
-            return View(postDb);
-        }
         /// <summary>
         /// Añade un nuevo Post.
         /// </summary>
-        /// <param name="postData"></param> 
+        /// <param name = "postData" ></ param >
         [HttpPost]
         public void AddNewPost([FromBody] PostViewModel postData)
         {
@@ -51,11 +45,11 @@ namespace Postinger.Controllers
             }
         }
 
-        /// <summary>
-        /// Obtiene todos los posts por usuario
-        /// </summary>
+        ///// <summary>
+        ///// Obtiene todos los posts por usuario
+        ///// </summary>
         //[HttpGet]
-        //public List<PostViewModel> GetAll(PostViewModel post) //TODO: Agregar AutoMapper
+        //public List<PostViewModel> GetAll() //TODO: Agregar AutoMapper
         //{
         //    //var userID = GetCurrentUserId();
         //    var userID = "4ed9f1f1-96c8-498e-b3dd-c8d57b4115c1";
@@ -67,7 +61,6 @@ namespace Postinger.Controllers
         //        .Where(x => x.UserId == userID);
 
         //    var test = posts.ToList();
-        //    //var dtoList = new List<PostDTO>();
 
         //    foreach (var item in test)
         //    {
@@ -100,23 +93,23 @@ namespace Postinger.Controllers
         /// <summary>
         /// Obtiene el id del usuario logueado
         /// </summary>
-        //[HttpGet]
-        //public string GetCurrentUserId()
-        //{
-        //    var identity = (ClaimsIdentity)User.Identity;
-        //    //var user = _UserManager.GetUserId();
-        //    var user = _UserManager.GetUserAsync(HttpContext.User);
+        [HttpGet]
+        public string GetCurrentUserId()
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+            //var user = _UserManager.GetUserId();
+            var user = _UserManager.GetUserAsync(HttpContext.User);
 
 
 
-        //    IEnumerable<Claim> claims = identity.Claims;
+            IEnumerable<Claim> claims = identity.Claims;
 
-        //    //var userLogged = _context.Users.Where(x => x.UserName == user.Result.UserName).FirstOrDefault();
+            //var userLogged = _context.Users.Where(x => x.UserName == user.Result.UserName).FirstOrDefault();
 
-        //    //var id = userLogged.Id;
+            //var id = userLogged.Id;
 
-        //    return "4ed9f1f1-96c8-498e-b3dd-c8d57b4115c1";
-        //}
+            return "4ed9f1f1-96c8-498e-b3dd-c8d57b4115c1";
+        }
 
         /// <summary>
         /// Añade un like a un post

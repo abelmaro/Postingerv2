@@ -67,7 +67,7 @@ namespace Postinger
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("./swagger/v1/swagger.json", "Postinger v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Postinger V1");
             });
 
             if (env.IsDevelopment())
@@ -79,7 +79,6 @@ namespace Postinger
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
@@ -87,6 +86,7 @@ namespace Postinger
 
             app.UseCors("MyPolicy");
 
+            app.UseHttpsRedirection();
 
 
             app.UseAuthentication();
@@ -96,12 +96,11 @@ namespace Postinger
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapControllers();
-
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
+                endpoints.MapControllers();
+                //endpoints.MapControllerRoute(
+                //    name: "default",
+                //    pattern: "{controller=Home}/{action=Index}/{id?}");
+                //endpoints.MapRazorPages();
             });
         }
     }

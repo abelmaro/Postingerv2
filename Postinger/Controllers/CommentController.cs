@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 
 namespace Postinger.Controllers
 {
-    //[EnableCors("MyPolicy")]
+    [ApiController]
+    [Route("api/[controller]/[action]")]
     public class CommentController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,12 +24,13 @@ namespace Postinger.Controllers
             this.userManager = userManager;
         }
 
+        [HttpGet]
         public List<CommentsViewModel> GetComentariosByPostId(int id)
         {
             var comentarios = _context.Comment.Where(x => x.PostID == id).ToList(); 
             return comentarios;
         }
-
+        [HttpPost]
         public CommentsViewModel AddComment([FromBody] CommentsViewModel vm)
         {
             var comment = new CommentsViewModel();
@@ -43,6 +45,7 @@ namespace Postinger.Controllers
             return comment;
         }
 
+        [HttpGet]
         public string GetCurrentUserId()
         {
             //var identity = (ClaimsIdentity)User.Identity;
@@ -56,7 +59,7 @@ namespace Postinger.Controllers
 
             return id;
         }
-
+        [HttpGet]
         public List<CommentsViewModel> GetComments()
         {
             var comentarios = _context.Comment.ToList();
